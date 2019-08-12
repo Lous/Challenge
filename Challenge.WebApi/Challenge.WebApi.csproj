@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>1bd06261-b93f-4319-aab3-add3031c42d3</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Models\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

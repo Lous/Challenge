@@ -85,6 +85,8 @@ namespace Challenge.WebApi
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserValidationService, UserValidationService>();
             services.AddTransient<IUserViewModelValidationRules, UserViewModelValidationRules>();
+            services.AddTransient<IAuthValidationService, AuthValidationService>();
+            services.AddTransient<IAuthViewModelValidationRules, AuthViewModelValidationRules>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

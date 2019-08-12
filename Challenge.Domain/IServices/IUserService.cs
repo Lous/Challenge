@@ -18,6 +18,10 @@ namespace Challenge.Domain.IServices
 
         void UpdateUser(User user);
 
+        void UpdateInfoAccess(UserViewModel userViewModel);
+
+        UserInfoViewModel GetUserInfo(string email);
+
         void DeleteUser(int id);
     }
 }

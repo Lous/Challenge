@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Challenge.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Challenge.Infrastructure.Service
 {
-    interface IAuthValidationService
+    public interface IAuthValidationService
     {
+        IAuthValidationService Validate(AuthViewModel authViewModel);
     }
 }

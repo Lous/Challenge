@@ -3,6 +3,7 @@ using Challenge.Domain.Entities;
 using Challenge.Domain.IRepositories;
 using Challenge.Domain.IServices;
 using Challenge.Domain.Models;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,7 @@ namespace Challenge.Infrastructure.Service
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-
         private readonly IMapper _mapper;
-
         private readonly IUserValidationService _userValidationService;
 
         public UserService(
@@ -45,6 +44,9 @@ namespace Challenge.Infrastructure.Service
 
         public void InsertUser(UserViewModel userViewModel)
         {
+            if (userViewModel == null)
+                throw new ArgumentException("UserViewModel Is Null!");
+
             _userValidationService.Validate(userViewModel);
 
             var _user = _mapper
@@ -53,9 +55,7 @@ namespace Challenge.Infrastructure.Service
             _user.Phones = userViewModel.Phones.Select(ph => new Phone
             {
                 AreaCode = ph.AreaCode,
-
                 CountryCode = ph.CountryCode,
-
                 Number = ph.Number
 
             }).ToList();
@@ -78,6 +78,39 @@ namespace Challenge.Infrastructure.Service
                 throw new ArgumentNullException();
             _userRepository.Delete(user);
 
+        }
+
+        public void UpdateInfoAccess(UserViewModel userViewModel)
+        {
+            var user = _userRepository.GetByEmail(userViewModel.Email);
+
+            user.LastAccess = DateTime.UtcNow;
+
+            _userRepository.Update(user);
+        }
+
+        public UserInfoViewModel GetUserInfo(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ValidationException("Missing Fields!");
+
+            // Email = Id in this case.
+            var user = _userRepository.GetByEmail(email);
+
+            if (user == null)
+                throw new ValidationException("User Not Found!");
+
+            var userInfoViewModel = _mapper.Map<User, UserInfoViewModel>(user);
+
+            userInfoViewModel.Phones = user.Phones.Select(ph => new PhoneViewModel
+            {
+                AreaCode = ph.AreaCode,
+                CountryCode = ph.CountryCode,
+                Number = ph.Number
+
+            }).ToList();
+
+            return userInfoViewModel;
         }
     }
 }

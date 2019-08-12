@@ -37,6 +37,12 @@ namespace Challenge.Infrastructure.Repository
             return entities.Include(u => u.Phones).SingleOrDefault(x => x.Email == email);
         }
 
+        public User GetByEmailAndPassword(string email, string password)
+        {
+            return entities.Include(u => u.Phones)
+                .SingleOrDefault(x => (x.Email == email && x.Password == password));
+        }
+
         public void Insert(User entity)
         {
             if (entity == null)
@@ -73,14 +79,6 @@ namespace Challenge.Infrastructure.Repository
         public void Commit()
         {
             _applicationContext.SaveChanges();
-        }
-
-        public User GetByEmailAndPassword(string email, string password)
-        {
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException();
-
-            return entities.SingleOrDefault(e => (e.Email == email && e.Password == password));
         }
     }
 }

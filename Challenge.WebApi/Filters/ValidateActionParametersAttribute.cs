@@ -13,7 +13,6 @@ namespace Challenge.WebApi.Filters
     {
         private const string RequiredAttributeKey = "RequiredAttribute";
 
-        /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;

@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Challenge.Domain.Models;
+using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Challenge.Infrastructure.Service.Validation
 {
-    interface IAuthViewModelValidationRules
+    public interface IAuthViewModelValidationRules
     {
+        ValidationResult Validate(AuthViewModel authViewModel);
     }
 }

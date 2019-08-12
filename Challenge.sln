@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Domain", "Challenge.Domain\Challenge.Domain.csproj", "{8CF638F0-FB91-431E-8B97-8CFEDDB8B482}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenge.Domain", "Challenge.Domain\Challenge.Domain.csproj", "{8CF638F0-FB91-431E-8B97-8CFEDDB8B482}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Infrastructure.Repository", "Challenge.Infrastructure.Repository\Challenge.Infrastructure.Repository.csproj", "{7D0133E7-279A-4417-B8B7-33DE9912A13B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenge.Infrastructure.Repository", "Challenge.Infrastructure.Repository\Challenge.Infrastructure.Repository.csproj", "{7D0133E7-279A-4417-B8B7-33DE9912A13B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Infrastructure.Service", "Challenge.Infrastructure.Service\Challenge.Infrastructure.Service.csproj", "{EBB005B6-A16B-4C52-9C2C-9C07E29EB669}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenge.Infrastructure.Service", "Challenge.Infrastructure.Service\Challenge.Infrastructure.Service.csproj", "{EBB005B6-A16B-4C52-9C2C-9C07E29EB669}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.WebApi", "Challenge.WebApi\Challenge.WebApi.csproj", "{11B60C68-C758-4A43-ADBE-C68F5A988E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenge.WebApi", "Challenge.WebApi\Challenge.WebApi.csproj", "{11B60C68-C758-4A43-ADBE-C68F5A988E03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Tests", "Challenge.Tests\Challenge.Tests.csproj", "{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{11B60C68-C758-4A43-ADBE-C68F5A988E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11B60C68-C758-4A43-ADBE-C68F5A988E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11B60C68-C758-4A43-ADBE-C68F5A988E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

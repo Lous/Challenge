@@ -27,6 +27,15 @@ namespace Challenge.Infrastructure.Service.Mapping
                 .ForMember(destination => destination.Email, options => options.MapFrom(source => source.Email))
                 .ForMember(destination => destination.Password, options => options.MapFrom(source => source.Password))
                 .ForMember(destination => destination.Phones, options => options.Ignore());
+
+            /// User to UserInfoViewModel
+            CreateMap<User, UserInfoViewModel>()
+                .ForMember(destination => destination.Firstname, options => options.MapFrom(source => source.Firstname))
+                .ForMember(destination => destination.Lastname, options => options.MapFrom(source => source.Lastname))
+                .ForMember(destination => destination.Email, options => options.MapFrom(source => source.Email))
+                .ForMember(destination => destination.CreatedAt, options => options.MapFrom(source => source.CreateAt))
+                .ForMember(destination => destination.LastAccess, options => options.MapFrom(source => source.LastAccess))
+                .ForMember(destination => destination.Phones, options => options.Ignore());
         }
     }
 }

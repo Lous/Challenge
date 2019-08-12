@@ -7,8 +7,6 @@ using Challenge.Domain.Entities;
 using Challenge.Domain.IServices;
 using Challenge.Domain.Models;
 using Challenge.WebApi.Filters;
-using Challenge.WebApi.Models.Request;
-using Challenge.WebApi.Models.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,17 +19,13 @@ namespace Challenge.WebApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-
         private readonly IAuthService _authService;
-
         private readonly IUserService _userService;
 
         public AuthController(IConfiguration configuration, IAuthService authService, IUserService userService)
         {
             _configuration = configuration;
-
             _authService = authService;
-
             _userService = userService;
         }
 
@@ -45,7 +39,8 @@ namespace Challenge.WebApi.Controllers
 
             return new OkObjectResult(new
             {
-                Message = "User was created successfully!", StatusCode = HttpStatusCode.OK
+                Message = "User was created successfully!",
+                StatusCode = HttpStatusCode.Created
             });
         }
 
@@ -53,20 +48,25 @@ namespace Challenge.WebApi.Controllers
         [ValidateActionParameters]
         [HttpPost]
         [Route("signin")]
-        public IActionResult Post([FromBody]SignInRequest signInRequest)
+        public IActionResult Post([FromBody]AuthViewModel authViewModel)
         {
-            if (signInRequest == null)
-                return new UnauthorizedResult();
+            var userViewModel = _authService.Authenticate(authViewModel);
 
-            var currentUser = _authService.Authenticate(signInRequest.Email, signInRequest.Password);
+            // Create the token that will be associate on User.
+            var result = _authService.CreateToken(userViewModel);
 
-            if (currentUser == null)
-                return new UnauthorizedResult();
+            userViewModel = result.userViewModel;
 
-            // Create the token that will be associate on currentUser.
-            var accessToken = _authService.CreateToken(currentUser);
+            // Update LastAccess and Token.
+            _userService.UpdateInfoAccess(userViewModel);
 
-            return new OkObjectResult(new { Message = "Success!", Token = accessToken, StatusCode = HttpStatusCode.OK });
+            return new OkObjectResult(new
+            {
+                Message = "User successfully logged in!",
+                StatusCode = HttpStatusCode.OK,
+                User = userViewModel,
+                AccessToken = result.accessToken
+            });
         }
     }
 }

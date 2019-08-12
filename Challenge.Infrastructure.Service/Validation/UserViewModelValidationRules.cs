@@ -17,20 +17,27 @@ namespace Challenge.Infrastructure.Service.Validation
 
             RuleFor(user => user.Firstname)
                 .NotEmpty()
-                .WithMessage("Firstname Missing Fields!");
+                .WithMessage("Missing Fields!");
+
             RuleFor(user => user.Lastname)
                 .NotEmpty()
-                .WithMessage("Lastname Missing Fields!");
+                .WithMessage("Missing Fields!");
+
             RuleFor(user => user.Email)
                 .NotEmpty()
+                .WithMessage("Missing Fields!")
                 .Must(EmailAlreadyExists)
-                .WithMessage("E-mail Already Exists!");
+                .WithMessage("Already Exists!")
+                .EmailAddress()
+                .WithMessage("Invalid!");
+
             RuleFor(user => user.Password)
                 .NotEmpty()
-                .WithMessage("Password Missing Fields!");
+                .WithMessage("Missing Fields!");
+
             RuleFor(user => user.Phones)
                 .NotNull()
-                .WithMessage("Phones Missing Fields!");
+                .WithMessage("Missing Fields!");
         }
 
         private bool EmailAlreadyExists(string email)

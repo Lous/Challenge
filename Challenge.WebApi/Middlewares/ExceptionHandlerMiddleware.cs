@@ -51,9 +51,12 @@ namespace Challenge.WebApi.Middlewares
 
             switch (exception)
             {
-                case var _ when exception is ValidationException:
+                case var ve when exception is ValidationException:
                     // BadRequest for bunisses exceptions.
                     _httpStatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+                case var ue when exception is UnauthorizedAccessException:
+                    _httpStatusCode = (int)HttpStatusCode.Unauthorized;
                     break;
                 default:
                     // Internal for general exceptions.
