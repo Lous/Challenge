@@ -33,32 +33,29 @@ namespace Challenge.WebApi.Controllers
         {
             if (!Request.Headers.TryGetValue("Authorization", out StringValues accessToken))
             {
-                return new OkObjectResult(new
-                {
-                    Message = "Missing AccessToken!",
-                    StatusCode = HttpStatusCode.Unauthorized
-                });
+                return new ObjectResult(Infrastructure.CrossCutting.ActionResults.ActionResult
+                    .CreateFailure(
+                    nonSuccessMessage: "Missing AccessToken!",
+                    statusCode: HttpStatusCode.Unauthorized));
             }
 
             if (!Request.Headers.TryGetValue("Username", out StringValues username))
             {
-                return new OkObjectResult(new
-                {
-                    Message = "Missing Username HeaderParameter!",
-                    StatusCode = HttpStatusCode.Unauthorized
-                });
+                return new ObjectResult(Infrastructure.CrossCutting.ActionResults.ActionResult
+                    .CreateFailure(
+                    nonSuccessMessage: "Missing Username HeaderParameter!",
+                    statusCode: HttpStatusCode.Unauthorized));
             }
 
             if (!_authService.ValidateTokenClaims(accessToken, username))
             {
-                return new OkObjectResult(new
-                {
-                    Message = "Invalid Token By Username!",
-                    StatusCode = HttpStatusCode.Forbidden
-                });
+                return new ObjectResult(Infrastructure.CrossCutting.ActionResults.ActionResult
+                    .CreateFailure(
+                    nonSuccessMessage: "Invalid Token By Username!",
+                    statusCode: HttpStatusCode.Unauthorized));
             }
 
-            return new OkObjectResult(_userService.GetUserInfo(username));
+            return new ObjectResult(_userService.GetUserInfo(username));
         }
     }
 }

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Challenge.Domain\Challenge.Domain.csproj" />
+    <ProjectReference Include="..\Challenge.Infrastructure.CrossCutting\Challenge.Infrastructure.CrossCutting.csproj" />
   </ItemGroup>
 
   <ItemGroup>

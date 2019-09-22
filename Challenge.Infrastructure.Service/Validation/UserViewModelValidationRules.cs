@@ -1,6 +1,7 @@
 ﻿using Challenge.Domain.IRepositories;
 using Challenge.Domain.Models;
 using FluentValidation;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,6 +39,15 @@ namespace Challenge.Infrastructure.Service.Validation
             RuleFor(user => user.Phones)
                 .NotNull()
                 .WithMessage("Missing Fields!");
+        }
+
+        public override ValidationResult Validate(ValidationContext<UserViewModel> context)
+        {
+            if (context.InstanceToValidate == null)
+            {
+                return new ValidationResult(new[] { new ValidationFailure("User", "User Cannot Be Null!") });
+            }
+            return base.Validate(context);
         }
 
         private bool EmailAlreadyExists(string email)

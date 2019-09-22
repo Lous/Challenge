@@ -35,13 +35,9 @@ namespace Challenge.WebApi.Controllers
         [Route("signup")]
         public IActionResult Post([FromBody]UserViewModel userViewModel)
         {
-            _userService.InsertUser(userViewModel);
+            var result = _userService.InsertUser(userViewModel);
 
-            return new OkObjectResult(new
-            {
-                Message = "User was created successfully!",
-                StatusCode = HttpStatusCode.Created
-            });
+            return new ObjectResult(result) { StatusCode = (int)result.StatusCode };
         }
 
         [AllowAnonymous]
@@ -50,23 +46,9 @@ namespace Challenge.WebApi.Controllers
         [Route("signin")]
         public IActionResult Post([FromBody]AuthViewModel authViewModel)
         {
-            var userViewModel = _authService.Authenticate(authViewModel);
+            var result = _authService.Authenticate(authViewModel);
 
-            // Create the token that will be associate on User.
-            var result = _authService.CreateToken(userViewModel);
-
-            userViewModel = result.userViewModel;
-
-            // Update LastAccess and Token.
-            _userService.UpdateInfoAccess(userViewModel);
-
-            return new OkObjectResult(new
-            {
-                Message = "User successfully logged in!",
-                StatusCode = HttpStatusCode.OK,
-                User = userViewModel,
-                AccessToken = result.accessToken
-            });
+            return new ObjectResult(result) { StatusCode = (int)result.StatusCode };
         }
     }
 }

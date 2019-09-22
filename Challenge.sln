@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenge.Infrastructure.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenge.WebApi", "Challenge.WebApi\Challenge.WebApi.csproj", "{11B60C68-C758-4A43-ADBE-C68F5A988E03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Tests", "Challenge.Tests\Challenge.Tests.csproj", "{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenge.Tests", "Challenge.Tests\Challenge.Tests.csproj", "{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Infrastructure.CrossCutting", "Challenge.Infrastructure.CrossCutting\Challenge.Infrastructure.CrossCutting.csproj", "{7AD30847-1229-442E-876A-2E9FF3C5B7CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1EC0B8-92DD-4F8D-A38A-A45F701D44E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AD30847-1229-442E-876A-2E9FF3C5B7CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AD30847-1229-442E-876A-2E9FF3C5B7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AD30847-1229-442E-876A-2E9FF3C5B7CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AD30847-1229-442E-876A-2E9FF3C5B7CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,7 @@ using Challenge.Domain.Entities;
 using Challenge.Domain.IRepositories;
 using Challenge.Domain.IServices;
 using Challenge.Domain.Models;
+using Challenge.Infrastructure.CrossCutting.ActionResults;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,7 @@ namespace Challenge.Infrastructure.Service
 {
     public class AuthService : IAuthService
     {
+        private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IAuthValidationService _authValidationServices;
@@ -24,12 +26,14 @@ namespace Challenge.Infrastructure.Service
         private readonly IConfiguration _configuration;
 
         public AuthService(
+            IUserService userService,
             IUserRepository userRepository,
             IMapper mapper,
             IAuthValidationService authValidationService,
             IUserValidationService userValidationService,
             IConfiguration configuration)
         {
+            _userService = userService;
             _userRepository = userRepository;
             _mapper = mapper;
             _authValidationServices = authValidationService;
@@ -37,14 +41,16 @@ namespace Challenge.Infrastructure.Service
             _configuration = configuration;
         }
 
-        public UserViewModel Authenticate(AuthViewModel authViewModel)
+        public ActionResult<UserViewModel> Authenticate(AuthViewModel authViewModel)
         {
             _authValidationServices.Validate(authViewModel);
 
             var user = _userRepository.GetByEmailAndPassword(authViewModel.Email, authViewModel.Password);
 
             if (user == null)
-                throw new UnauthorizedAccessException("Invalid Credentials!");
+            {
+                return ActionResult<UserViewModel>.CreateFailure(ex: new UnauthorizedAccessException(), statusCode: System.Net.HttpStatusCode.Unauthorized);
+            }
 
             var userViewModel = _mapper.Map<User, UserViewModel>(user);
 
@@ -56,10 +62,16 @@ namespace Challenge.Infrastructure.Service
 
             }).ToList();
 
-            return userViewModel;
+            /// Update LastAccess.
+            _userService.UpdateInfoAccess(userViewModel);
+
+            /// Create Token.
+            userViewModel.Token = CreateToken(userViewModel);
+
+            return ActionResult<UserViewModel>.CreateSuccessResult(result: userViewModel, message: "User successfully logged in!");
         }
 
-        public (UserViewModel userViewModel, string accessToken) CreateToken(UserViewModel userViewModel)
+        public string CreateToken(UserViewModel userViewModel)
         {
             var claims = new[]
             {
@@ -84,9 +96,7 @@ namespace Challenge.Infrastructure.Service
 
             #endregion
 
-            var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return (userViewModel: userViewModel, accessToken: accessToken);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public bool ValidateTokenClaims(string accessToken, string username)

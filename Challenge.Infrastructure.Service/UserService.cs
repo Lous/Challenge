@@ -3,6 +3,7 @@ using Challenge.Domain.Entities;
 using Challenge.Domain.IRepositories;
 using Challenge.Domain.IServices;
 using Challenge.Domain.Models;
+using Challenge.Infrastructure.CrossCutting.ActionResults;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -42,15 +43,11 @@ namespace Challenge.Infrastructure.Service
             return _userRepository.GetAll();
         }
 
-        public void InsertUser(UserViewModel userViewModel)
+        public ActionResult InsertUser(UserViewModel userViewModel)
         {
-            if (userViewModel == null)
-                throw new ArgumentException("UserViewModel Is Null!");
-
             _userValidationService.Validate(userViewModel);
 
-            var _user = _mapper
-                .Map<UserViewModel, User>(userViewModel);
+            var _user = _mapper.Map<UserViewModel, User>(userViewModel);
 
             _user.Phones = userViewModel.Phones.Select(ph => new Phone
             {
@@ -61,6 +58,8 @@ namespace Challenge.Infrastructure.Service
             }).ToList();
 
             _userRepository.Insert(_user);
+
+            return ActionResult.CreateSuccessResult();
         }
 
         public void UpdateUser(User user)
@@ -89,16 +88,19 @@ namespace Challenge.Infrastructure.Service
             _userRepository.Update(user);
         }
 
-        public UserInfoViewModel GetUserInfo(string email)
+        public ActionResult<UserInfoViewModel> GetUserInfo(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
-                throw new ValidationException("Missing Fields!");
+                return ActionResult<UserInfoViewModel>
+                    .CreateFailure(ex: new ArgumentNullException(), 
+                    statusCode: System.Net.HttpStatusCode.BadRequest);
 
-            // Email = Id in this case.
             var user = _userRepository.GetByEmail(email);
 
             if (user == null)
-                throw new ValidationException("User Not Found!");
+                return ActionResult<UserInfoViewModel>
+                    .CreateFailure(ex: new ArgumentNullException(), 
+                    statusCode: System.Net.HttpStatusCode.NotFound);
 
             var userInfoViewModel = _mapper.Map<User, UserInfoViewModel>(user);
 
@@ -110,7 +112,8 @@ namespace Challenge.Infrastructure.Service
 
             }).ToList();
 
-            return userInfoViewModel;
+            return ActionResult<UserInfoViewModel>
+                .CreateSuccessResult(result: userInfoViewModel);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Challenge.Domain.Entities;
 using Challenge.Domain.Models;
+using Challenge.Infrastructure.CrossCutting.ActionResults;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,13 +15,13 @@ namespace Challenge.Domain.IServices
 
         User GetUserByEmail(string email);
 
-        void InsertUser(UserViewModel userViewModel);
+        ActionResult InsertUser(UserViewModel userViewModel);
 
         void UpdateUser(User user);
 
         void UpdateInfoAccess(UserViewModel userViewModel);
 
-        UserInfoViewModel GetUserInfo(string email);
+        ActionResult<UserInfoViewModel> GetUserInfo(string email);
 
         void DeleteUser(int id);
     }
