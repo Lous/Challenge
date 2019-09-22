@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Challenge.Domain.IRepositories;
+using Challenge.Domain.IServices;
 using Challenge.Domain.Models;
 using Challenge.Infrastructure.Service;
 using FluentValidation;
@@ -14,6 +15,7 @@ namespace Challenge.Tests
     {
         private readonly AuthService _authService;
 
+        private readonly Mock<IUserService> _mockUserService;
         private readonly Mock<IUserRepository> _mockUserRepository;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<IAuthValidationService> _mockAuthValidationService;
@@ -22,6 +24,7 @@ namespace Challenge.Tests
 
         public AuthServiceTests()
         {
+            _mockUserService = new Mock<IUserService>();
             _mockUserRepository = new Mock<IUserRepository>();
             _mockMapper = new Mock<IMapper>();
             _mockAuthValidationService = new Mock<IAuthValidationService>();
@@ -29,6 +32,7 @@ namespace Challenge.Tests
             _mockConfiguration = new Mock<IConfiguration>();
 
             _authService = new AuthService(
+                _mockUserService.Object,
                 _mockUserRepository.Object,
                 _mockMapper.Object,
                 _mockAuthValidationService.Object,
